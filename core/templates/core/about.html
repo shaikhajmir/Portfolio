@@ -1,0 +1,157 @@
+{% extends "core/base.html" %}
+{% block title %}About - Shaikh Ajmirilal{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto px-4 py-12 space-y-8">
+  <div>
+    <h1 class="text-2xl font-bold mb-3">About Me</h1>
+    <p class="text-sm text-slate-300 max-w-3xl">
+      I’m Shaikh Ajmirilal, a developer who enjoys building practical and creative projects using
+      Python, Django, Flask, PHP, MySQL, and Android. I like experimenting with AI, computer vision,
+      and interactive UI to create apps that feel smooth and useful.
+    </p>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold mb-3">Education</h2>
+    <div class="space-y-4 text-sm">
+      {% for edu in education_list %}
+        <div class="border border-slate-800 rounded-2xl p-4 bg-slate-900/60">
+          <p class="font-semibold">{{ edu.degree }}</p>
+          <p class="text-slate-300">{{ edu.institution }}</p>
+          <p class="text-slate-500 text-xs">
+            {{ edu.start_year }} - {% if edu.is_current %}Present{% else %}{{ edu.end_year }}{% endif %}
+            {% if edu.location %} · {{ edu.location }}{% endif %}
+          </p>
+          {% if edu.details %}
+            <p class="text-slate-400 text-xs mt-1">{{ edu.details }}</p>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="text-slate-500 text-sm">Add your education details in the admin panel.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold mb-3">Current Learning</h2>
+    <ul class="list-disc list-inside text-sm text-slate-300">
+      {% for course in current_courses %}
+        <li>{{ course.title }} · <span class="text-slate-400 text-xs">{{ course.platform }}</span></li>
+      {% empty %}
+        <li class="text-slate-500 text-sm">Add your current courses in the admin panel.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold mb-3">Future Plans</h2>
+    <p class="text-sm text-slate-300 max-w-3xl">
+      {{ future_plans }}
+    </p>
+  </div>
+</section>
+<script>
+// Reveal on scroll
+(function() {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, {threshold: 0.12});
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    io.observe(el);
+  });
+
+  // timeline reveal (scale the vertical line)
+  const timeline = document.getElementById('edu-timeline');
+  if (timeline) {
+    const tio = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting) timeline.classList.add('visible');
+      });
+    }, {threshold: 0.2});
+    tio.observe(timeline);
+  }
+
+  // typewriter for future plans
+  const text = `{{ future_plans|escapejs }}`;
+  const el = document.getElementById('future-type');
+  if (el && text) {
+    let i = 0;
+    const speed = 28;
+    function type() {
+      if (i <= text.length) {
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(type, speed);
+      }
+    }
+    setTimeout(type, 500);
+  }
+})();
+</script>
+<style>
+/* Small animation utilities (works with Tailwind) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* timeline */
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.timeline:before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9));
+  border-radius: 999px;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 800ms ease;
+}
+.timeline.visible:before { transform: scaleY(1); }
+
+/* pill */
+.pill {
+  display:inline-block;
+  padding:0.25rem 0.6rem;
+  border-radius:9999px;
+  background: rgba(255,255,255,0.04);
+  font-size:0.75rem;
+}
+
+/* subtle hover pop */
+.card-hover {
+  transition: transform 280ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms;
+}
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+
+/* typewriter */
+.typewriter {
+  display:inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  border-right:2px solid rgba(255,255,255,0.14);
+  animation: blink 900ms steps(1,end) infinite;
+}
+@keyframes blink { 50% { border-color: transparent } }
+
+/* course badge */
+.course-badge { font-size: .72rem; padding:.2rem .5rem; border-radius: .5rem; background: rgba(255,255,255,0.03); }
+</style>
+{% endblock %}

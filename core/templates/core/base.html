@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}Portfolio - Shaikh Ajmirilal{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Lottie (Trophy animation) -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+<body class="bg-slate-950 text-slate-100 antialiased">
+<!-- Dynamic Aurora Background -->
+<div class="aurora-bg">
+  <div class="aurora-layer"></div>
+</div>
+
+<!-- Optional noise layer -->
+<div class="aurora-noise"></div>
+
+  <!-- 🏆 Trophy Preloader -->
+  <div id="preloader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-slate-900 to-slate-950">
+    <div class="w-28 h-28 rounded-xl flex items-center justify-center bg-slate-900/60 p-2 shadow-2xl">
+      <lottie-player
+          id="preloader-lottie"
+          src="https://assets3.lottiefiles.com/packages/lf20_touohxv0.json"
+          background="transparent"
+          speed="1"
+          style="width:90px; height:90px;"
+          loop autoplay>
+      </lottie-player>
+    </div>
+  </div>
+
+
+  <!-- SITE WRAPPER -->
+  <div id="site-wrapper" class="min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-slate-950/60 backdrop-blur border-b border-slate-800">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        
+        <a href="{% url 'home' %}" class="flex items-center gap-2">
+          <span class="text-indigo-400 text-lg font-bold">&lt;/&gt;</span>
+          <span class="text-sm font-semibold">Portfolio</span>
+        </a>
+
+        <nav class="hidden md:flex gap-6 items-center text-sm">
+          <a href="{% url 'projects' %}" class="nav-underline">Projects</a>
+          <a href="{% url 'languages' %}" class="nav-underline">Languages</a>
+          <a href="{% url 'about' %}" class="nav-underline">About</a>
+          <a href="{% url 'certifications' %}" class="nav-underline">Certifications</a>
+          <a href="{% url 'contact' %}" class="nav-underline">Contact</a>
+        </nav>
+<!-- Link to generated resume (on-the-fly PDF) -->
+<!--<a href="{% url 'generate_resume_pdf' %}" class="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-400 text-sm">Download Resume (PDF)</a>-->
+
+<!-- If you prefer to serve uploaded resume (uploaded via admin) -->
+<a href="{% url 'download_uploaded_resume' %}" class="px-4 py-2 rounded-full border border-slate-700 hover:border-indigo-400 text-sm">Download Uploaded Resume</a>
+
+        <div class="flex items-center gap-3 text-xl">
+          <a href="https://github.com/shaikhajmir" target="_blank" class="text-slate-300 hover:text-indigo-400">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/shaikh-ajmirilal-932878384"
+             target="_blank" class="text-slate-300 hover:text-indigo-400">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://www.instagram.com/_ajmir_x01" target="_blank" class="text-slate-300 hover:text-pink-400">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main id="main" class="flex-1">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800">
+      <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
+        
+        <div class="text-slate-300 font-medium">© 2025 Shaikh Ajmirilal</div>
+
+        <div class="flex gap-4">
+          <a href="{% url 'projects' %}" class="hover:text-indigo-400">Projects</a>
+          <a href="{% url 'languages' %}" class="hover:text-indigo-400">Languages</a>
+          <a href="{% url 'contact' %}" class="hover:text-indigo-400">Contact</a>
+        </div>
+
+        <div class="flex gap-4 text-xl text-slate-300">
+          <a href="https://github.com/shaikhajmir" target="_blank" class="hover:text-indigo-400">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/shaikh-ajmirilal-932878384" target="_blank" class="hover:text-indigo-400">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="https://www.instagram.com/_ajmir_x01" target="_blank" class="hover:text-pink-400">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </div>
+ 
+      </div>
+    </footer>
+
+
+    <!-- 🤖 Chatbot Button -->
+    <div id="chatbot-toggle"
+         class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-indigo-500 shadow-lg flex items-center justify-center cursor-pointer hover:bg-indigo-400 transition z-50">
+      🤖
+    </div>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-box"
+         class="fixed bottom-24 right-6 w-80 max-w-[90vw] bg-slate-900 border border-slate-700 rounded-2xl shadow-xl p-4 hidden z-50">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="font-semibold text-sm">AjBot · Your Portfolio Guide</h3>
+        <button id="chatbot-close" class="text-slate-400 hover:text-slate-200 text-xs">✕</button>
+      </div>
+      <div id="chatbot-messages" class="h-40 overflow-y-auto text-xs space-y-2 mb-3">
+        <div class="bg-slate-800 rounded-xl px-3 py-2 w-fit max-w-[90%]">Hi! I'm AjBot 🤖. Want to explore Shaikh’s projects or skills?</div>
+      </div>
+      <div class="flex flex-wrap gap-2 text-[10px]">
+        <button class="chatbot-btn px-2 py-1 rounded-full bg-slate-800 hover:bg-indigo-500">Show skills</button>
+        <button class="chatbot-btn px-2 py-1 rounded-full bg-slate-800 hover:bg-indigo-500">Show projects</button>
+        <button class="chatbot-btn px-2 py-1 rounded-full bg-slate-800 hover:bg-indigo-500">Contact info</button>
+        <button class="chatbot-btn px-2 py-1 rounded-full bg-slate-800 hover:bg-indigo-500">Current learning</button>
+      </div>
+    </div>
+
+
+    <!-- Certificate Modal -->
+    <div class="cert-modal" aria-hidden="true">
+      <div class="backdrop"></div>
+      <img src="" alt="certificate preview" />
+    </div>
+
+  </div><!-- END WRAPPER -->
+
+
+  <!-- Static JS -->
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/chatbot.js' %}"></script>
+
+  <!-- ⭐ Main Animation Engine: Trophy timeout + reveals + bars + counters -->
+  <script>
+  (function(){
+
+    const qAll = sel => Array.from(document.querySelectorAll(sel));
+
+    /* -------- 1) Hide trophy after fixed time -------- */
+    const TROPHY_TIME = 1700;  // ⏳ Change this (1200–2000 recommended)
+
+    function hidePreloader() {
+      const p = document.getElementById('preloader');
+      if (!p) return;
+      p.style.transition = "opacity .45s ease";
+      p.style.opacity = "0";
+      setTimeout(() => p.remove(), 500);
+    }
+
+    /* -------- 2) Show all reveal elements -------- */
+    function showReveals() {
+      qAll('.reveal').forEach(e => e.classList.add('show'));
+    }
+
+    /* -------- 3) Animate progress bars -------- */
+    function animateBars() {
+      qAll('.lang-wrap').forEach((wrap, i) => {
+        const bar = wrap.querySelector('.lang-bar');
+        if (!bar) return;
+
+        let pct = wrap.style.getPropertyValue('--pct');
+        if (!pct) pct = wrap.getAttribute('data-prog') + '%' || '0%';
+
+        bar.style.width = "0%";
+
+        setTimeout(() => {
+          bar.style.width = pct;
+          wrap.classList.add('animate');
+        }, 100 + i * 120);
+      });
+    }
+
+    /* -------- 4) Animate counters -------- */
+    function animateCount(el, target, duration = 1000) {
+      target = parseInt(target,10) || 0;
+      const start = 0;
+      const t0 = performance.now();
+
+      (function frame(now){
+        const p = Math.min(1, (now - t0)/duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(start + target * eased);
+        if (p < 1) requestAnimationFrame(frame);
+      })(performance.now());
+    }
+
+    function startCounters() {
+      qAll('[data-counter]').forEach(box => {
+        const el = box.querySelector('[data-count-display]');
+        const raw = el.getAttribute('data-target') || el.textContent;
+        const target = parseInt(raw.replace(/\D/g,''),10) || 0;
+        animateCount(el, target, 1100);
+      });
+    }
+
+    /* -------- 5) Certificates modal -------- */
+    function enableModal() {
+      const modal = document.querySelector('.cert-modal');
+      if (!modal) return;
+      const img = modal.querySelector('img');
+      const backdrop = modal.querySelector('.backdrop');
+
+      qAll('.cert-thumb').forEach(t => {
+        t.addEventListener('click', () => {
+          img.src = t.getAttribute('data-full') || t.src;
+          modal.classList.add('open');
+        });
+      });
+
+      backdrop.addEventListener('click', () => modal.classList.remove('open'));
+    }
+
+    /* -------- INIT -------- */
+    function init() {
+      showReveals();
+      animateBars();
+      startCounters();
+      enableModal();
+    }
+
+    // Show trophy first → then hide → then animations
+    setTimeout(() => {
+      hidePreloader();
+      init();
+    }, TROPHY_TIME);
+
+  })();
+  </script>
+
+</body>
+</html>

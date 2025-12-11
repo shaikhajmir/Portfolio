@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% block title %}Home - Shaikh Ajmirilal{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-10 items-center">
+  <!-- LEFT: hero text -->
+  <div class="space-y-4 hero-float">
+    <p class="text-sm text-indigo-400">Hello, I’m</p>
+    <h1 class="text-3xl md:text-4xl font-bold">Shaikh Ajmirilal</h1>
+    <p class="text-xl text-slate-300">Python, Django, Flask, PHP, MySQL & Android Developer</p>
+    <p class="text-sm text-slate-400">I build practical and creative web & mobile experiences using modern stacks and clean UI.</p>
+
+    <div class="flex gap-4 mt-4">
+      <a href="{% url 'projects' %}" class="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-400 text-sm transition">View Projects</a>
+      <a href="{% url 'contact' %}" class="px-4 py-2 rounded-full border border-slate-600 hover:border-indigo-400 text-sm transition">Contact Me</a>
+    </div>
+
+    <!-- Stats: animated counters -->
+  <div class="flex gap-6 mt-6 text-sm">
+  <div class="reveal" data-counter>
+    <!-- show server value as initial text & keep data-target for JS animation -->
+    <p class="text-2xl font-bold text-indigo-400 counter" data-count-display data-target="{{ stats.projects }}">{{ stats.projects }}</p>
+    <p class="text-slate-400">Projects</p>
+  </div>
+  <div class="reveal" data-counter>
+    <p class="text-2xl font-bold text-indigo-400 counter" data-count-display data-target="{{ stats.tech }}">{{ stats.tech }}</p>
+    <p class="text-slate-400">Technologies</p>
+  </div>
+  <div class="reveal" data-counter>
+    <p class="text-2xl font-bold text-indigo-400 counter" data-count-display data-target="{{ stats.hours }}">{{ stats.hours }}</p>
+    <p class="text-slate-400">Hours Learning</p>
+  </div>
+</div>
+
+  </div>
+
+  <!-- RIGHT: skills & featured -->
+  <div class="space-y-4">
+    <div class="border border-slate-800 rounded-2xl p-4 reveal">
+      <h2 class="text-sm font-semibold mb-2">Featured Skills</h2>
+      <div class="flex flex-wrap gap-2 text-xs">
+        {% for skill in skills %}
+          <span class="px-3 py-1 rounded-full bg-slate-800">{{ skill.name }}</span>
+        {% empty %}
+          <p class="text-slate-500 text-xs">Add skills in admin panel to show here.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="border border-slate-800 rounded-2xl p-4 reveal">
+      <h2 class="text-sm font-semibold mb-2">Featured Projects</h2>
+      <div class="space-y-3">
+        {% for project in featured_projects %}
+          <a href="{% url 'project_detail' project.slug %}" class="block p-3 rounded-xl bg-slate-900 hover:border-indigo-500 border border-slate-800 project-card" data-tilt>
+            <p class="text-sm font-semibold">{{ project.title }}</p>
+            <p class="text-xs text-slate-400">{{ project.short_tagline }}</p>
+          </a>
+        {% empty %}
+          <p class="text-slate-500 text-xs">Mark some projects as featured in admin.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

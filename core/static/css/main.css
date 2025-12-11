@@ -1,0 +1,145 @@
+/* main.css — high-quality animation styles & helpers */
+
+/* Basic tweaks */
+:root { --accent-1: #6366f1; --accent-2: #a78bfa; --bg: #0b1220; }
+html, body { height: 100%; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Preloader */
+#preloader { position: fixed; inset: 0; z-index: 9999; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg,#071026,#040612); }
+#preloader .loader { width: 88px; height: 88px; border-radius: 16px; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.02); box-shadow: 0 20px 60px rgba(2,6,23,0.7); }
+
+/* Header nav underline */
+.nav-underline { position: relative; padding-bottom: 6px; }
+.nav-underline::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0%; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); transition: width .28s ease; }
+.nav-underline:hover::after { width: 100%; }
+
+/* Reveal helpers */
+.reveal { opacity: 0; transform: translateY(12px) scale(.995); transition: opacity .6s cubic-bezier(.2,.9,.25,1), transform .6s cubic-bezier(.2,.9,.25,1); }
+.reveal.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Project cards */
+.project-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 16px; transition: transform .36s cubic-bezier(.2,.9,.25,1), box-shadow .36s cubic-bezier(.2,.9,.25,1); will-change: transform, box-shadow; }
+.project-card:hover { transform: translateY(-16px) scale(1.02); box-shadow: 0 34px 80px rgba(2,6,23,0.72); }
+
+/* Hero subtle floating */
+.hero-float { will-change: transform; }
+
+/* Skill bars */
+.lang-wrap { display:flex; gap:12px; align-items:center; }
+.lang-bar { height: 12px; width: 0%; border-radius: 999px; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); transition: width .9s cubic-bezier(.2,.9,.25,1); }
+.lang-bubble { min-width:44px; text-align:center; font-weight:700; font-size:12px; color:#071026; background: linear-gradient(90deg,var(--accent-2),var(--accent-1)); padding:6px 8px; border-radius:999px; box-shadow: 0 6px 18px rgba(10,12,20,0.6); }
+
+/* Counters */
+.counter { font-variant-numeric: tabular-nums; }
+
+/* Certificate modal */
+.cert-modal { display:none; position:fixed; inset:0; z-index:70; align-items:center; justify-content:center; }
+.cert-modal.open { display:flex; }
+.cert-modal .backdrop { position:absolute; inset:0; background: rgba(2,6,23,0.78); }
+.cert-modal img { max-width:92%; max-height:86%; border-radius:12px; box-shadow: 0 28px 80px rgba(2,6,23,0.85); transform-origin:center; }
+
+/* Chatbot floating / pulse */
+#chatbot-toggle { animation: chatbot-float 2.6s ease-in-out infinite; }
+@keyframes chatbot-float { 0% { transform: translateY(0); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+#chatbot-toggle.pulse { animation: chatbot-pulse 1.6s ease 0s 2; }
+@keyframes chatbot-pulse { 0%{ transform: scale(1); box-shadow: 0 8px 20px rgba(99,102,241,0.12);} 50%{ transform: scale(1.06); box-shadow: 0 18px 48px rgba(99,102,241,0.18);} 100%{ transform: scale(1); box-shadow: 0 8px 20px rgba(99,102,241,0.12);} }
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .lang-bar, .project-card, .reveal, .counter, #chatbot-toggle { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto!important; }
+}
+
+/* Misc small tweaks */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg,var(--accent-1),var(--accent-2)); border-radius: 999px; }
+/* -------- Enhanced CSS animations for skills & UI -------- */
+
+/* accents */
+:root{
+  --accent-1:#6366f1;
+  --accent-2:#a78bfa;
+  --bg-dark:#040612;
+}
+
+/* subtle shimmer for tracks */
+.lang-track {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+}
+.lang-track::after {
+  content: "";
+  position: absolute;
+  left: -40%;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  transform: skewX(-12deg);
+  animation: shimmer 2.0s linear infinite;
+  opacity: 0.7;
+}
+@keyframes shimmer {
+  0% { left: -40%; }
+  100% { left: 140%; }
+}
+
+/* bar fill with smooth transition */
+.lang-bar {
+  height: 12px;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  box-shadow: 0 6px 18px rgba(10,12,20,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: width 950ms cubic-bezier(.22,.9,.28,1);
+}
+
+/* animated bubble with subtle pop */
+.lang-bubble {
+  min-width:44px;
+  padding:6px 10px;
+  border-radius:999px;
+  background: linear-gradient(90deg,var(--accent-2),var(--accent-1));
+  color: #071026;
+  font-weight:700;
+  transform: translateY(8px) scale(.98);
+  opacity: 0;
+  transition: transform 480ms cubic-bezier(.22,.9,.28,1), opacity 380ms ease;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+}
+
+/* when wrapper has .animate -> bubble appears */
+.lang-wrap.animate .lang-bubble {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* subtle entry fade for reveal */
+.reveal { opacity:0; transform: translateY(10px) scale(.995); transition: opacity .6s ease, transform .6s ease; }
+.reveal.show { opacity:1; transform: translateY(0) scale(1); }
+
+/* small control UI */
+.anim-controls {
+  position: fixed; left: 12px; bottom: 12px; z-index: 80;
+  background: rgba(8,10,16,0.6); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.03); padding: 8px; border-radius: 12px;
+  display:flex; gap:8px; align-items:center;
+}
+.anim-controls button { background:transparent; color:var(--accent-2); border:1px solid rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; font-size:13px; cursor:pointer; }
+.anim-controls button:hover{ transform: translateY(-2px); }
+
+/* reduce-motion: completely disable transitions/animations when true */
+.reduced-motion * { animation: none !important; transition: none !important; }
+
+/* accessibility: respect user preference */
+@media (prefers-reduced-motion: reduce) {
+  .lang-bar, .lang-bubble, .reveal, .anim-controls button { transition: none !important; animation: none !important; }
+}
+/* If you previously added .anim-controls styles, remove/hide them.
+   This snippet ensures the site doesn't show the control widget. */
+/* Dynamic Aurora Background */
+
+
+

@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+{% block title %}Projects - Shaikh Ajmirilal{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 py-12">
+  <h1 class="text-2xl font-bold mb-6 reveal">Projects</h1>
+  <div class="grid md:grid-cols-2 gap-6">
+    {% for project in projects %}
+      <a href="{% url 'project_detail' project.slug %}"
+         class="project-card reveal p-4 rounded-2xl bg-slate-900/60 border border-slate-800" data-tilt>
+        <h2 class="text-lg font-semibold mb-1">{{ project.title }}</h2>
+        <p class="text-xs text-slate-400 mb-2">{{ project.short_tagline }}</p>
+        <div class="flex flex-wrap gap-1 text-[10px] text-slate-300">
+          {% for tech in project.tech_list %}
+            <span class="px-2 py-1 rounded-full bg-slate-800">{{ tech }}</span>
+          {% endfor %}
+        </div>
+      </a>
+    {% empty %}
+      <p class="text-slate-500 text-sm">No projects yet. Add some in the admin panel.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

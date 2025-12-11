@@ -1,0 +1,97 @@
+{% extends "core/base.html" %}
+{% block title %}Languages - Shaikh Ajmirilal{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto px-4 py-12 space-y-6">
+  <!-- Header -->
+  <div class="reveal">
+    <h1 class="text-2xl font-bold mb-2">Languages I’ve Studied</h1>
+    <p class="text-sm text-slate-300 max-w-2xl">
+      Here are the programming / tech languages I’ve worked with so far, along with how confident I feel in each one.
+    </p>
+  </div>
+
+  <!-- Total box -->
+  <div class="border border-slate-800 rounded-2xl p-4 bg-slate-900/60 flex items-center justify-between reveal">
+    <p class="text-sm text-slate-300">Total languages studied</p>
+    <p class="text-3xl font-bold text-indigo-400">{{ total }}</p>
+  </div>
+
+  <!-- Language Progress list -->
+  <div class="space-y-6">
+    <h2 class="text-sm font-semibold text-slate-300 mb-1 reveal">Language Progress</h2>
+
+    {% for lang in languages %}
+      {# wrapper: set CSS var --pct from server value and also include data-prog for JS fallback #}
+      <div class="reveal lang-wrap" style="--pct: {{ lang.proficiency|default:0 }}%;" data-prog="{{ lang.proficiency|default:0 }}">
+        <!-- left side: name + track -->
+        <div class="lang-left w-full">
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="text-slate-200 font-medium">{{ lang.name }}</span>
+            <span class="text-slate-400">{{ lang.proficiency|default:0 }}%</span>
+          </div>
+
+          <div class="lang-track" aria-hidden="true">
+            <!-- .lang-bar visually fills by CSS animation (uses --pct) or by inline width set by JS -->
+            <div class="lang-bar" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- right side: floating percentage bubble -->
+        <div class="ml-4">
+          <div class="lang-bubble" aria-hidden="true">{{ lang.proficiency|default:0 }}%</div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-sm text-slate-500">No languages added yet. Open the admin panel and add Skills with category = "Language".</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Inline script: ensure smooth bar fill + bubble animation (staggered) -->
+<script>
+  (function() {
+    // Animate language bars reliably after load
+    function animateLangBars() {
+      const wraps = Array.from(document.querySelectorAll('.lang-wrap'));
+      wraps.forEach((wrap, i) => {
+        const bar = wrap.querySelector('.lang-bar');
+        if (!bar) return;
+
+        // Prefer CSS var --pct (set inline), else fallback to data-prog
+        let pct = wrap.style.getPropertyValue('--pct');
+        if (!pct || pct.trim() === '') {
+          const dp = wrap.getAttribute('data-prog');
+          pct = (dp !== null && dp !== undefined) ? (dp + '%') : '0%';
+        }
+
+        pct = pct.trim();
+
+        // Start at 0 (guarantee)
+        bar.style.width = '0%';
+
+        // Staggered animation so user sees progression
+        setTimeout(() => {
+          // set to CSS var if browser supports calc of var in animation - but directly set width to trigger transition
+          bar.style.width = pct;
+          // reveal bubble nicely once bar starts
+          wrap.classList.add('animate');
+        }, 140 + i * 120);
+      });
+    }
+
+    // Run after DOM ready and a tiny paint delay
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(animateLangBars, 100);
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(animateLangBars, 100);
+      });
+    }
+
+    // Safety: re-run if images/styles load late (rare) to ensure width applied
+    window.addEventListener('load', function(){ setTimeout(animateLangBars, 80); });
+
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+{% block title %}Contact - Shaikh Ajmirilal{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto px-4 py-12">
+  <h1 class="text-2xl font-bold mb-3">Contact Me</h1>
+  <p class="text-sm text-slate-300 mb-4">
+    Have a question, idea, or opportunity? Send me a message using the form below.
+  </p>
+
+  <form method="post" class="space-y-4 text-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"
+            class="mt-2 px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-400 text-sm">
+      Send Message
+    </button>
+  </form>
+</section>
+{% endblock %}
