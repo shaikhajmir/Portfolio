@@ -83,3 +83,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+import os
+from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_secret_key())
+
+# Set DEBUG from env (default False in production)
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+
+# ALLOWED_HOSTS: comma-separated in env, e.g. "example.com,127.0.0.1"
+allowed = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
+ALLOWED_HOSTS = [h.strip() for h in allowed.split(',') if h.strip()]
