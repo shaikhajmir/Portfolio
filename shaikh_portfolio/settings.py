@@ -22,7 +22,6 @@ ALLOWED_HOSTS = [h.strip() for h in allowed.split(",") if h.strip()]
 
 # --------------------------------------------------
 # APPLICATIONS
-# --------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -31,8 +30,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "cloudinary",
+    "cloudinary_storage",
+
     "core",
 ]
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 
 # --------------------------------------------------
 # MIDDLEWARE
@@ -110,8 +114,8 @@ STATICFILES_STORAGE = (
 # --------------------------------------------------
 # MEDIA FILES (IMAGES, CERTIFICATES)
 # --------------------------------------------------
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "media"
 
 # --------------------------------------------------
 # DEFAULTS

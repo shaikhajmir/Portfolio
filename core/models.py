@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
 
 class Skill(models.Model):
     CATEGORY_CHOICES = (
@@ -67,7 +68,7 @@ class Certification(models.Model):
     provider = models.CharField(max_length=200, blank=True)
     issued_date = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
-    certificate_image = models.ImageField(upload_to="certificates/", blank=True, null=True)
+    certificate_image = CloudinaryField("certificate", blank=True, null=True)
 
     def __str__(self):
         return self.title
