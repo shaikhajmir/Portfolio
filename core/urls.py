@@ -11,5 +11,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('resume/generate/', views.generate_resume_pdf, name='generate_resume_pdf'),
     path('resume/download/', views.download_uploaded_resume, name='download_uploaded_resume'),
+    path("create-admin/", views.create_admin),
+
 ]
-path("create-admin/", views.create_admin),
+
