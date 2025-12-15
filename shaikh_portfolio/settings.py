@@ -1,9 +1,12 @@
 from pathlib import Path
 import os
 from django.core.management.utils import get_random_secret_key
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # --------------------------------------------------
-# BASE
+# BASE DIRECTORY
 # --------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,14 +17,14 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", get_random_secret_key())
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
-allowed = os.environ.get(
+ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
     "127.0.0.1,localhost,portfolio-fim5.onrender.com"
-)
-ALLOWED_HOSTS = [h.strip() for h in allowed.split(",") if h.strip()]
+).split(",")
 
 # --------------------------------------------------
 # APPLICATIONS
+# --------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -30,20 +33,21 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
 
+    # Local app
     "core",
 ]
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-
 
 # --------------------------------------------------
 # MIDDLEWARE
 # --------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # REQUIRED
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -56,7 +60,6 @@ MIDDLEWARE = [
 # URLS / WSGI
 # --------------------------------------------------
 ROOT_URLCONF = "shaikh_portfolio.urls"
-
 WSGI_APPLICATION = "shaikh_portfolio.wsgi.application"
 
 # --------------------------------------------------
@@ -102,7 +105,7 @@ USE_I18N = True
 USE_TZ = True
 
 # --------------------------------------------------
-# STATIC FILES (CRITICAL FOR RENDER)
+# STATIC FILES (ADMIN CSS FIXED)
 # --------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -112,12 +115,18 @@ STATICFILES_STORAGE = (
 )
 
 # --------------------------------------------------
-# MEDIA FILES (IMAGES, CERTIFICATES)
+# MEDIA FILES (CLOUDINARY)
 # --------------------------------------------------
-# MEDIA_URL = "/media/"
-# MEDIA_ROOT = BASE_DIR / "media"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
 
 # --------------------------------------------------
-# DEFAULTS
+# DEFAULT PRIMARY KEY
 # --------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
