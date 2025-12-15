@@ -204,3 +204,22 @@ def about(request):
         "current_courses": current_courses,
         "future_plans": future_plans,
     })
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+
+def create_admin(request):
+    User = get_user_model()
+
+    username = "admin"
+    email = "admin@example.com"
+    password = "AdminPass123!"
+
+    user, created = User.objects.get_or_create(username=username, defaults={"email": email})
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password(password)
+    user.save()
+
+    return HttpResponse(
+        f"Superuser created or updated.<br>Username: {username}<br>Password: {password}"
+    )
