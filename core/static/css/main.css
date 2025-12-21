@@ -140,6 +140,56 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 /* If you previously added .anim-controls styles, remove/hide them.
    This snippet ensures the site doesn't show the control widget. */
 /* Dynamic Aurora Background */
+/* =====================================
+   CONTACT FORM – CSS RESET & FIX
+   ===================================== */
+
+.contact-safe,
+.contact-safe * {
+  all: revert;
+  box-sizing: border-box;
+}
+
+.contact-safe {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 24px;
+}
+
+.contact-safe label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.contact-safe input,
+.contact-safe textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 1px solid #64748b;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.contact-safe input:focus,
+.contact-safe textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.contact-safe button {
+  width: 100%;
+  padding: 10px;
+  background: #6366f1;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
 
 

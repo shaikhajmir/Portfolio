@@ -74,7 +74,16 @@ def languages(request):
 
 
 def certifications(request):
-    return render(request, "core/certifications.html")
+    try:
+        certifications = Certification.objects.all()  # Make sure this model exists
+        return render(request, 'core/certifications.html', {
+            'certifications': certifications
+        })
+    except Exception as e:
+        print(f"Error loading certifications: {e}")
+        return render(request, 'core/certifications.html', {
+            'certifications': []
+        })
 
 
 def contact(request):
@@ -172,12 +181,17 @@ def home(request):
         "stats": stats,
     })
 def certifications(request):
-    from .models import Certification
-    certifications = Certification.objects.all().order_by('-issued_date')
+    try:
+        certifications = Certification.objects.all()  # Make sure this model exists
+        return render(request, 'core/certifications.html', {
+            'certifications': certifications
+        })
+    except Exception as e:
+        print(f"Error loading certifications: {e}")
+        return render(request, 'core/certifications.html', {
+            'certifications': []
+        })
 
-    return render(request, "core/certifications.html", {
-        "certifications": certifications
-    })
 # core/views.py
 from django.shortcuts import render
 
